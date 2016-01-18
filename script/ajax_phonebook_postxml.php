@@ -67,7 +67,7 @@
 		}
 	$content=$xml->asXML();
 	file_put_contents($filename, $content);
-	header('Location:ajax_phonebook.php');
+	header('Location:../index.php');
 	?>
 </body>
 </html>
