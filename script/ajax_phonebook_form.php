@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel=Stylesheet href="css/ajax_phonebook.css">
+<link rel=Stylesheet href="../css/ajax_phonebook.css">
 </head>
 <body>
 	<?php
@@ -10,7 +10,7 @@
 		$id=$_GET['id'];
 	}
 	else{$id=00;}
-	$filename=$_GET['filename'];
+	$filename="../".$_GET['filename'];
 	$lastname;
 	$firstname;
 	$surname;
@@ -39,11 +39,7 @@
 						
 					</tr>
 					<tr>';
-			// echo '<td><input type="text" name="lastname" value="'.iconv("UTF-8","cp1251",$value->fio->lastname).'"></td>';
-			// echo '<td><input type="text" name="firstname" placeholder="Иван" value="'.iconv("UTF-8","cp1251",$value->fio->firstname).'"></td>';
-			// echo '<td><input type="text" name="surname" value="'.iconv("UTF-8","cp1251",$value->fio->surname).'"></td>';
-			// echo '<td><input type="text" name="phone" value="'.$value->phone.'"></td>';
-
+		
 			echo '<td><input type="text" name="lastname" value="'.$value->fio->lastname.'"></td>';
 			echo '<td><input type="text" name="firstname" placeholder="Иван" value="'.$value->fio->firstname.'"></td>';
 			echo '<td><input type="text" name="surname" value="'.$value->fio->surname.'"></td>';
@@ -57,8 +53,7 @@
 			$bd=$value->birthdate;
 			echo '<td><input name="birthdate" type="date" value="'.$bd->year.'-'.$bd->month.'-'.$bd->day.'"></td>';
 			$ad=$value->adress;
-			// echo '<td><input type="text" name="country" value="'.iconv("UTF-8","cp1251",$ad->country).'"></td>';
-			// echo '<td><input type="text" name="city" value="'.iconv("UTF-8","cp1251",$ad->city).'"></td>';
+			
 			echo '<td><input type="text" name="country" value="'.$ad->country.'"></td>';
 			echo '<td><input type="text" name="city" value="'.$ad->city.'"></td>';
 			echo '				</tr>
@@ -99,7 +94,7 @@
 					<input type="submit" name="create" value="Сохранить контакт">
 					<input type="hidden" name="filename" value="'.$filename.'">
 					<input type="hidden" name="id" value="'.($maxid+1).'">
-					<input type="submit" name="cancel" value="Отмена" formaction="ajax_phonebook.php">
+					<input type="submit" name="cancel" value="Отмена" formaction="../index.php">
 				</form>';
 		}
 	?>
