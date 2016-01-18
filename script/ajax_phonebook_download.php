@@ -1,5 +1,5 @@
 <?php
-	$filename=$_POST['filename'];
+	$filename="../".$_POST['filename'];
 	if (file_exists($filename)) {
 	    $xml = simplexml_load_file($filename);
 	}
@@ -7,7 +7,7 @@
 	    exit('Failed to open '.$filename);
 	}
 	$contentarr=array();
-	$file="downloads/ajax_phonebook.txt";
+	$file="../downloads/ajax_phonebook.txt";
 	foreach ($xml as $key => $value) {
 	$content="ФИО :".$value->fio->lastname." ".$value->fio->firstname." ".$value->fio->surname."\r\n"
 	."Телефон: ".$value->phone."\r\n"
