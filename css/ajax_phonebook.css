@@ -5,3 +5,17 @@ table{
 }
 tr{background-color: Linen;}
 td{padding: 5px;}
+
+.card{
+	width: 500px;
+	height: 130px;
+	background-color: Oldlace;
+	border:solid 1px black;
+	border-radius: 3px;
+	box-shadow:0 0 5px gray;
+	margin: 15px;
+}
+.card tr{
+	background-color: Oldlace;
+	}
+#fio{font-weight: bold;}
