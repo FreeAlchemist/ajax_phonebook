@@ -5,67 +5,48 @@
 <link rel=Stylesheet href="css/ajax_phonebook.css">
 <script type="text/javascript" src="script/jquery/jquery-1.12.0.js"></script>
 </head>
-<body>
-	
-<?php
-include("script/showdir.php");
+<body onload="postxml()">
+<div id="overlay">
+     <div>
+          <form>
+          	<input type="reset">
+          	<table>
+          		<tr>
+          			<td>Фамилия</td>
+          			<td>Имя</td>
+          			<td>Отчество</td>
+          			<td>Телефон</td>
+          		</tr>
+          		<tr>
+	          		<td><input type="text" id="lastname" placeholder="Иванов"></td>
+	          		<td><input type="text" id="firstname" placeholder="Иван"></td>
+	          		<td><input type="text" id="surname" placeholder="Иванович"></td>
+	          		<td><input type="text" id="phone" placeholder="+70001112233"></td>
+          		</tr>
+          		<tr>
+					<td>Дата рождения</td>
+					<td>Страна</td>
+					<td>Город</td>
+				</tr>
+				<tr>	
+	          		<td><input id="birthdate" type="date"></td>
+	          		<td><input type="text" id="country" placeholder="Россия"></td>
+	          		<td><input type="text" id="city" placeholder="Ленинград"></td>
+          		</tr>
+				</table>						
+          	<input type="submit" name="create" value="Сохранить контакт">
+          	<input type="submit" name="cancel" value="Отмена" formaction="../index.php">
+          </form>
+     </div>
+</div>
+<div id="menu">
+<input type="submit" value="Скачать">
+<input type="submit" value="Добавить контакт">
+<hr>
+</div>
+<div id="cards"></div>
 
-print_r(showpath("downloads"));
 
-$arr=showpath("downloads");
-foreach ($arr as $key => $value) {
-	echo "<li><a href=\"downloads/".$value."\"> скачать</a></li>";
-}
+<script type="text/javascript" src="script/ajax_phonebook_request.js"></script>
 
-$filename="data/ajax_phonebook.xml";
-
-if (file_exists($filename)) {
-    $xml = simplexml_load_file($filename);
-}
-else {
-    exit('Failed to open '.$filename);
-}
-echo '<form method="post" action="script/ajax_phonebook_download.php">';
-echo '<input type="submit" value="Скачать">';
-echo '<input type="hidden" name="filename" value="'.$filename.'">';
-echo '</form>';
-
-echo '<form method="get" action="script/ajax_phonebook_form.php">';
-echo '<input type="submit" value="Добавить контакт">';
-echo '<input type="hidden" name="filename" value="'.$filename.'">';
-echo '<input type="hidden" name="add" value="1">';
-echo '</form>';
-
-foreach ($xml as $key => $value) {
-	echo "<table class=\"card\">";
-	echo "<tr>";
-	echo "<td id=\"fio\">";
-	echo $value->fio->lastname." "
-	    .$value->fio->firstname." "
-	    .$value->fio->surname;
-	echo "</td>";
-	echo "<td>";
-	echo "<a href=\"script/ajax_phonebook_form.php?id=".$value['id']."&filename=".$filename."\">"
-		."Редактировать"."</a>";
-	echo "</td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>";
-	echo $value->phone;
-	echo "</td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>";
-	echo $value->birthdate->day."."
-		.$value->birthdate->month."."
-		.$value->birthdate->year;
-	echo "</td>";
-	echo "<td>";
-	echo $value->adress->country.", "
-		.$value->adress->city;	
-	echo "</td>";
-	echo "</tr>";
-}
-echo "</table>";
-?>
 </body>
