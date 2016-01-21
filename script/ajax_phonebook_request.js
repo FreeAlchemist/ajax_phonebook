@@ -54,6 +54,7 @@ function savexml(){
 					alert("Successfully wrote")
 					$("#loading").hide(500)
 					$("#dataform").show(500)
+					$("#birthdate").attr("value", "")
 					closePopUp()
 					$("#cards").empty()
 					var arr = xmlobj.contactlist.contact
@@ -93,19 +94,7 @@ function openPopUp(contact){
 	savedata.change(contact)
 }
 
-function savedata (contact){
-	console.log(contact)
-	// contact.fio.lastname = $("#lastname").attr("value");
 
-	// $("#lastname").attr("value",contact.fio.lastname);
-	// $("#firstname").attr("value",contact.fio.firstname);
-	// $("#surname").attr("value",contact.fio.surname);
-	// $("#phone").attr("value",contact.phone);
-	// $("#birthdate").attr("value",contact.birthdate.year+"-"+contact.birthdate.month+"-"+contact.birthdate.day);
-	// //value="'.$bd->year.'-'.$bd->month.'-'.$bd->day.'"
-	// $("#country").attr("value",contact.adress.country);
-	// $("#city").attr("value",contact.adress.city);
-}
 var savedata = function(contact){
 	var cont = contact || null
 	var result = function (){
@@ -128,16 +117,20 @@ var savedata = function(contact){
 
 		if(cont.hasOwnProperty("birthdate") == false){
 			cont.birthdate = {}
+			console/log("created cont.birthdate")
 		}
 
 		if(cont.birthdate.hasOwnProperty("day") == false){
 			cont.birthdate.day = {}
+			console/log("created cont.birthdate.day")
 		}
 		if(cont.birthdate.hasOwnProperty("month") == false){
 			cont.birthdate.month = {}
+			console/log("created cont.birthdate.month")
 		}
 		if(cont.birthdate.hasOwnProperty("year") == false){
 			cont.birthdate.year = {}
+			console/log("created cont.birthdate.year")
 		}
 
 		if(cont.hasOwnProperty("adress") == false){
@@ -152,13 +145,12 @@ var savedata = function(contact){
 			cont.adress.city = {}
 		}
 
-
-		console.log($("#firstname").val())
-		console.log($("#surname").val())
-		console.log($("#phone").val())
-		console.log($("#birthdate").val())
-		console.log($("#country").val())
-		console.log($("#city").val())
+		// console.log($("#firstname").val())
+		// console.log($("#surname").val())
+		// console.log($("#phone").val())
+		// console.log($("#birthdate").val())
+		// console.log($("#country").val())
+		// console.log($("#city").val())
 
 		cont.fio.lastname = $("#lastname").val();
 		cont.fio.firstname = $("#firstname").val();
@@ -173,16 +165,20 @@ var savedata = function(contact){
 		var birthmonth = datestr.charAt(5)+datestr.charAt(6)
 		var birthday = datestr.charAt(8)+datestr.charAt(9)
 		
-		console.log("birthyear")
-		console.log(birthyear)
-		console.log("birthmonth")
-		console.log(birthmonth)
-		console.log("birthday")
-		console.log(birthday)
+		// console.log("birthyear")
+		// console.log(birthyear)
+		// console.log("birthmonth")
+		// console.log(birthmonth)
+		// console.log("birthday")
+		// console.log(birthday)
 
-		cont.birthdate.year = 1985
-		cont.birthdate.month = 03
-		cont.birthdate.day = 13
+		// cont.birthdate.year = birthyear//1985
+		// cont.birthdate.month = birthmonth//03
+		// cont.birthdate.day = birthday//13
+
+		cont.birthdate.year = birthyear//1985
+		cont.birthdate.month = birthmonth//03
+		cont.birthdate.day = birthday//13
 
 		cont.adress.country = $("#country").val();
 		cont.adress.city = $("#city").val();
