@@ -12,21 +12,16 @@ function http_zapros_self(sel,flag){
 		
 		return function(method, url){
 			$.get(url,function(data){
-				console.log($otvet);
 				$otvet.html(data);
 			});
 		}
 	}()
 }
-// http_zapros2 = http_zapros_self("#show",1);
-// console.log(http_zapros2+"")
 
 http_zapros = http_zapros_self("#content");
-// console.log(http_zapros+"")
 
 function posttxt(){
 	$.post( "downloads/ajax_phonebook.txt", function( data ) {
-		console.log(data);
 	  $( "#fio1" ).html( data );
 	});
 }
@@ -34,12 +29,9 @@ function posttxt(){
 
 function postxml(){
 	$.post( "script/xml_json.php", function( xml ) {
-		// console.log(xml)
-		var xmlobj = eval("("+xml+")")
-
-	  // console.log(xmlobj.contact[0])
-	  // $( "#fio1" ).html(  );
-	  var arr = xmlobj.contact
+		window.xmlobj = eval("("+xml+")")
+	  // console.log(xmlobj)
+	  var arr = xmlobj.contactlist.contact
 	  for (var i = arr.length - 1; i >= 0; i--) {
 	  	createcard(arr[i])
 	  };
@@ -50,17 +42,206 @@ function postxml(){
 	  })
 }
 
+function savexml(){
+	
+	$("#dataform").hide(500)
+	var newxmlobj = jQuery.extend(true, {}, xmlobj);
+	$xmlstring = Classes.JSON.toXML(newxmlobj);
+	$("#loading").show(500,
+		function(){
+			$.post( "script/json_xml.php", {xmlstr:$xmlstring}, function(answer){
+				if(answer==1){
+					alert("Successfully wrote")
+					$("#loading").hide(500)
+					$("#dataform").show(500)
+					closePopUp()
+					$("#cards").empty()
+					var arr = xmlobj.contactlist.contact
+					for (var i = arr.length - 1; i >= 0; i--) {
+						createcard(arr[i])
+					};
+
+				}
+				else{
+					alert("Failed to write")
+					$("#loading").hide(500)
+					$("#dataform").show(500)
+				}
+				
+			})
+			.fail(function() {
+			    alert("Error while saving file")
+			  })
+			
+		}
+	)
+}
+
+
+
 function openPopUp(contact){
 	el = document.getElementById("overlay");
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-	$("#lastname").attr("value",contact.fio.lastname);
-	$("#firstname").attr("value",contact.fio.firstname);
-	$("#surname").attr("value",contact.fio.surname);
-	$("#phone").attr("value",contact.phone);
-	$("#birthdate").attr("value",contact.birthdate.year+"-"+contact.birthdate.month+"-"+contact.birthdate.day);
-	//value="'.$bd->year.'-'.$bd->month.'-'.$bd->day.'"
-	$("#country").attr("value",contact.adress.country);
-	$("#city").attr("value",contact.adress.city);
+	$("#lastname").attr("value", !contact ? "" : contact.fio.lastname);
+	$("#firstname").attr("value", !contact ? "" : contact.fio.firstname);
+	$("#surname").attr("value", !contact ? "" : contact.fio.surname);
+	$("#phone").attr("value", !contact ? "" : contact.phone);
+	$("#birthdate").attr("value", !contact ? "" : contact.birthdate.year+"-"+contact.birthdate.month+"-"+contact.birthdate.day);
+	$("#country").attr("value", !contact ? "" : contact.adress.country);
+	$("#city").attr("value", !contact ? "" : contact.adress.city);
+	var contact = contact || {}
+	savedata.change(contact)
+}
+
+function savedata (contact){
+	console.log(contact)
+	// contact.fio.lastname = $("#lastname").attr("value");
+
+	// $("#lastname").attr("value",contact.fio.lastname);
+	// $("#firstname").attr("value",contact.fio.firstname);
+	// $("#surname").attr("value",contact.fio.surname);
+	// $("#phone").attr("value",contact.phone);
+	// $("#birthdate").attr("value",contact.birthdate.year+"-"+contact.birthdate.month+"-"+contact.birthdate.day);
+	// //value="'.$bd->year.'-'.$bd->month.'-'.$bd->day.'"
+	// $("#country").attr("value",contact.adress.country);
+	// $("#city").attr("value",contact.adress.city);
+}
+var savedata = function(contact){
+	var cont = contact || null
+	var result = function (){
+		// console.log(cont)
+		if(cont.hasOwnProperty("fio") == false){
+			cont.fio = {}
+		}
+			if(cont.fio.hasOwnProperty("lastname") == false){
+				cont.fio.lastname = {}
+			}
+			if(cont.fio.hasOwnProperty("firstname") == false){
+				cont.fio.firstname = {}
+			}
+			if(cont.fio.hasOwnProperty("surname") == false){
+				cont.fio.surname = {}
+			}
+		if(cont.hasOwnProperty("phone") == false){
+			cont.phone = {}
+		}
+
+		if(cont.hasOwnProperty("birthdate") == false){
+			cont.birthdate = {}
+		}
+
+		if(cont.birthdate.hasOwnProperty("day") == false){
+			cont.birthdate.day = {}
+		}
+		if(cont.birthdate.hasOwnProperty("month") == false){
+			cont.birthdate.month = {}
+		}
+		if(cont.birthdate.hasOwnProperty("year") == false){
+			cont.birthdate.year = {}
+		}
+
+		if(cont.hasOwnProperty("adress") == false){
+			cont.adress = {}
+		}
+
+		if(cont.adress.hasOwnProperty("country") == false){
+			cont.adress.country = {}
+		}
+
+		if(cont.adress.hasOwnProperty("city") == false){
+			cont.adress.city = {}
+		}
+
+
+		console.log($("#firstname").val())
+		console.log($("#surname").val())
+		console.log($("#phone").val())
+		console.log($("#birthdate").val())
+		console.log($("#country").val())
+		console.log($("#city").val())
+
+		cont.fio.lastname = $("#lastname").val();
+		cont.fio.firstname = $("#firstname").val();
+		cont.fio.surname = $("#surname").val();
+
+		cont.phone = $("#phone").val();
+
+		// 0986-03-02
+		// 0123456789
+		var datestr=$("#birthdate").val()
+		var birthyear = datestr.charAt(0)+datestr.charAt(1)+datestr.charAt(2)+datestr.charAt(3)
+		var birthmonth = datestr.charAt(5)+datestr.charAt(6)
+		var birthday = datestr.charAt(8)+datestr.charAt(9)
+		
+		console.log("birthyear")
+		console.log(birthyear)
+		console.log("birthmonth")
+		console.log(birthmonth)
+		console.log("birthday")
+		console.log(birthday)
+
+		cont.birthdate.year = 1985
+		cont.birthdate.month = 03
+		cont.birthdate.day = 13
+
+		cont.adress.country = $("#country").val();
+		cont.adress.city = $("#city").val();
+
+		if(cont.hasOwnProperty("@attributes") == false){
+			var maxid = 0
+			var arr = xmlobj.contactlist.contact
+
+			for (var i = arr.length - 1; i >= 0; i--) {
+				var currentid = arr[i]["@attributes"].id
+				if(currentid > maxid){
+					maxid = currentid
+				}
+			}
+			resultid = Number(maxid)+Number(1)
+			cont["@attributes"] = {id:resultid}
+			arr.push(cont)
+			savexml()
+		}
+		else{
+			var arr = xmlobj.contactlist.contact
+			for (var i = arr.length - 1; i >= 0; i--) {
+
+				console.log(arr[i]["@attributes"].id)
+				if(arr[i]["@attributes"].id == cont["@attributes"].id){
+					arr[i] = cont
+					savexml()
+				}
+			}
+		}
+		console.log(xmlobj)
+	}
+	result.change = function(contact){
+		cont = contact
+	}
+	result.delete = function(contact){
+		var arr = xmlobj.contactlist.contact
+		for (var i = arr.length - 1; i >= 0; i--) {
+
+			console.log(arr[i]["@attributes"].id)
+
+			if(arr[i]["@attributes"].id == cont["@attributes"].id){
+				arr.splice(i,1)
+				savexml()
+			}
+		};
+	}
+	return result
+}()
+
+
+
+console.log(savedata)
+console.log(savedata.change)
+
+
+function closePopUp(){
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "none";
 }
 
 function createopenpopup(contact){
@@ -68,7 +249,7 @@ function createopenpopup(contact){
 }
 
 function createcard(contact){
-	console.log(contact)
+	// console.log(contact)
 	var card = $("<table />",{"class":"card"})
 
 	var tr1 = $("<tr />")
@@ -91,18 +272,19 @@ function createcard(contact){
 
 		//function a (){return function b}()
 
-var func = function(contact){
+		var func = function(contact){
 			var cont = contact
 			return function(){
-				console.log(cont)
+				// console.log(cont)
 				openPopUp(cont)
 			}
 		};
+
+
+
 	var td12 = $("<td />",{
 		click:func(contact), 
 		text:"Редактировать"})
-
-	// td12.html("<a href=\"#\" onclick=\"openPopUp(contact)\">Редактировать</a>")
 
 	card.append(tr1)
 	tr1.append(td11).append(td12)
@@ -111,8 +293,12 @@ var func = function(contact){
 	var td21 = $("<td />",{
 		text : contact.phone
 	})
+	var td22 = $("<td />",{
+		text : contact["@attributes"].id
+	})
 	card.append(tr2)
 	tr2.append(td21)
+	tr2.append(td22)
 
 	var tr3 = $("<tr />")
 	var td31 = $("<td />",{
@@ -128,3 +314,4 @@ var func = function(contact){
 	$("#cards").append(card)
 
 }
+
