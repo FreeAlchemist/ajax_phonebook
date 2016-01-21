@@ -29,7 +29,6 @@
 		if ($value['id']==$id) {
 				
 			echo '<form method="post" action="ajax_phonebook_postxml.php">
-				<input type="reset">
 				<table>
 					<tr>
 						<td>Фамилия</td>
@@ -62,6 +61,7 @@
 				<input type="hidden" name="filename" value="'.$filename.'">
 				<input type="hidden" name="id" value="'.$id.'">
 				<input type="submit" name="delete" value="Удалить контакт">
+				<input type="submit" name="cancel" value="Отмена" formaction="../index.php">
 			</form>';
 		}
 	}
