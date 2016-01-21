@@ -37,7 +37,7 @@
 				$value->fio->lastname=$_POST['lastname'];
 				$value->fio->firstname=$_POST['firstname'];
 				$value->fio->surname=$_POST['surname'];
-				$value->fio->phone=$_POST['phone'];
+				$value->phone=$_POST['phone'];
 				$ad=$value->adress;
 				$ad->country=$_POST['country'];
 				$ad->city=$_POST['city'];
